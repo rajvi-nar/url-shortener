@@ -25,5 +25,5 @@ variable "cluster_name" {
 variable "acr_name" {
   description = "Name of the Azure Container Registry (globally unique, lowercase, no dashes)"
   type        = string
-  default     = "urlshorteneracr"
+  default     = "urlshortenertest123"
 }
