@@ -1,6 +1,6 @@
 import uuid
 import redis.asyncio as aioredis
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, HttpUrl
 from contextlib import asynccontextmanager
@@ -36,17 +36,19 @@ async def health():
 
 
 @app.post("/shorten", response_model=ShortenResponse)
-async def shorten(request: ShortenRequest):
+async def shorten(body: ShortenRequest, request: Request):
     code = uuid.uuid4().hex[:8]
-    await redis_client.set(code, str(request.url))
-    return ShortenResponse(short_url=f"{settings.base_url}/{code}")
+    await redis_client.set(code, str(body.url))
+    base = str(request.base_url).rstrip("/")
+    return ShortenResponse(short_url=f"{base}/{code}")
 
 
 @app.get("/shorten", response_model=ShortenResponse)
-async def shorten_via_query(url: HttpUrl):
+async def shorten_via_query(url: HttpUrl, request: Request):
     code = uuid.uuid4().hex[:8]
     await redis_client.set(code, str(url))
-    return ShortenResponse(short_url=f"{settings.base_url}/{code}")
+    base = str(request.base_url).rstrip("/")
+    return ShortenResponse(short_url=f"{base}/{code}")
 
 
 @app.get("/{code}")
