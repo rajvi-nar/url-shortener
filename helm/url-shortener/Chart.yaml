@@ -1,0 +1,6 @@
+apiVersion: v2
+name: url-shortener
+description: A URL shortener built with FastAPI and Redis
+type: application
+version: 0.1.0
+appVersion: "latest"

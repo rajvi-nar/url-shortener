@@ -1,0 +1,21 @@
+namespace: url-shortener
+
+app:
+  replicas: 1
+  image:
+    repository: urlshortenertest123.azurecr.io/url-shortener
+    tag: latest
+    pullPolicy: Always
+  port: 8000
+  service:
+    type: LoadBalancer
+    port: 80
+
+redis:
+  replicas: 1
+  image:
+    repository: redis
+    tag: 7-alpine
+  port: 6379
+  service:
+    port: 6379
