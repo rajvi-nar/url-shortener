@@ -5,6 +5,8 @@ from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, HttpUrl
 from contextlib import asynccontextmanager
 
+from prometheus_fastapi_instrumentator import Instrumentator
+
 from app.config import settings
 
 
@@ -28,6 +30,8 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="URL Shortener", lifespan=lifespan)
+
+Instrumentator().instrument(app).expose(app)
 
 
 @app.get("/health")

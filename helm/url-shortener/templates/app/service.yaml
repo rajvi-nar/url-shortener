@@ -3,10 +3,13 @@ kind: Service
 metadata:
   name: url-shortener
   namespace: {{ .Values.namespace }}
+  labels:
+    app: url-shortener
 spec:
   type: {{ .Values.app.service.type }}
   selector:
     app: url-shortener
   ports:
-    - port: {{ .Values.app.service.port }}
+    - name: http
+      port: {{ .Values.app.service.port }}
       targetPort: {{ .Values.app.port }}
